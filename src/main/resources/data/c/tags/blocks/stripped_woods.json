@@ -1,0 +1,116 @@
+{
+  "values": [
+    "stripped_acacia_wood",
+    "stripped_birch_wood",
+    "stripped_dark_oak_wood",
+    "stripped_jungle_wood",
+    "stripped_oak_wood",
+    "stripped_spruce_wood",
+    "stripped_crimson_hyphae",
+    "stripped_warped_hyphae",
+    {
+      "id": "promenade:stripped_cherry_oak_wood",
+      "required": false
+    },
+    {
+      "id": "promenade:stripped_palm_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_blue_enchanted_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_boabab_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cherry_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cika_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cypress_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_ebony_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_ether_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_fir_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_green_enchanted_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_holly_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_imbued_nightshade_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_lament_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_mahogany_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_maple_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_nightshade_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_palm_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_palo_verde_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_pine_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_redwood_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_skyris_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_white_mangrove_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_willow_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_witch_hazel_wood",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_withering_oak_wood",
+      "required": false
+    }
+  ]
+}

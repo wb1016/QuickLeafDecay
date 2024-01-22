@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:white_cherry_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:pink_cherry_leaves",
+      "required": false
+    }
+  ]
+}

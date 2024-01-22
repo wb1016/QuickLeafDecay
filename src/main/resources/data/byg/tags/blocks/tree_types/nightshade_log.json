@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:nightshade_leaves",
+      "required": false
+    },
+    {
+      "id": "bug:flowering_nightshade_leaves",
+      "required": false
+    }
+  ]
+}

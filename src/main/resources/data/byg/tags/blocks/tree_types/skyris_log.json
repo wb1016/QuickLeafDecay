@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:skyris_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:green_apple_skyris_leaves",
+      "required": false
+    }
+  ]
+}

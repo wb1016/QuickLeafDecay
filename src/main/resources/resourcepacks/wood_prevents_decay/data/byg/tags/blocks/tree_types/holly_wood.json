@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:holly_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:holly_berry_leaves",
+      "required": false
+    }
+  ]
+}

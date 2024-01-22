@@ -1,0 +1,117 @@
+{
+  "values": [
+    "acacia_wood",
+    "birch_wood",
+    "dark_oak_wood",
+    "jungle_wood",
+    "oak_wood",
+    "spruce_wood",
+    "crimson_hyphae",
+    "warped_hyphae",
+    "#c:stripped_woods",
+    {
+      "id": "promenade:cherry_oak_wood",
+      "required": false
+    },
+    {
+      "id": "promenade:palm_wood",
+      "required": false
+    },
+    {
+      "id": "byg:blue_enchanted_wood",
+      "required": false
+    },
+    {
+      "id": "byg:boabab_wood",
+      "required": false
+    },
+    {
+      "id": "byg:cherry_wood",
+      "required": false
+    },
+    {
+      "id": "byg:cika_wood",
+      "required": false
+    },
+    {
+      "id": "byg:cypress_wood",
+      "required": false
+    },
+    {
+      "id": "byg:ebony_wood",
+      "required": false
+    },
+    {
+      "id": "byg:ether_wood",
+      "required": false
+    },
+    {
+      "id": "byg:fir_wood",
+      "required": false
+    },
+    {
+      "id": "byg:green_enchanted_wood",
+      "required": false
+    },
+    {
+      "id": "byg:holly_wood",
+      "required": false
+    },
+    {
+      "id": "byg:imbued_nightshade_wood",
+      "required": false
+    },
+    {
+      "id": "byg:lament_wood",
+      "required": false
+    },
+    {
+      "id": "byg:mahogany_wood",
+      "required": false
+    },
+    {
+      "id": "byg:maple_wood",
+      "required": false
+    },
+    {
+      "id": "byg:nightshade_wood",
+      "required": false
+    },
+    {
+      "id": "byg:palm_wood",
+      "required": false
+    },
+    {
+      "id": "byg:palo_verde_wood",
+      "required": false
+    },
+    {
+      "id": "byg:pine_wood",
+      "required": false
+    },
+    {
+      "id": "byg:redwood_wood",
+      "required": false
+    },
+    {
+      "id": "byg:skyris_wood",
+      "required": false
+    },
+    {
+      "id": "byg:white_mangrove_wood",
+      "required": false
+    },
+    {
+      "id": "byg:willow_wood",
+      "required": false
+    },
+    {
+      "id": "byg:witch_hazel_wood",
+      "required": false
+    },
+    {
+      "id": "byg:withering_oak_wood",
+      "required": false
+    }
+  ]
+}

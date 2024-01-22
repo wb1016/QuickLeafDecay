@@ -1,0 +1,117 @@
+{
+  "values": [
+    "stripped_acacia_log",
+    "stripped_birch_log",
+    "stripped_dark_oak_log",
+    "stripped_jungle_log",
+    "stripped_oak_log",
+    "stripped_spruce_log",
+    "stripped_crimson_stem",
+    "stripped_warped_stem",
+    "#c:stripped_woods",
+    {
+      "id": "promenade:stripped_cherry_oak_log",
+      "required": false
+    },
+    {
+      "id": "promenade:stripped_palm_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_blue_enchanted_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_boabab_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cherry_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cika_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_cypress_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_ebony_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_ether_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_fir_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_green_enchanted_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_holly_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_imbued_nightshade_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_lament_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_mahogany_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_maple_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_nightshade_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_palm_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_palo_verde_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_pine_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_redlog_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_skyris_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_white_mangrove_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_willow_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_witch_hazel_log",
+      "required": false
+    },
+    {
+      "id": "byg:stripped_withering_oak_log",
+      "required": false
+    }
+  ]
+}

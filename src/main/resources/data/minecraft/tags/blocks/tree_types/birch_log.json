@@ -1,0 +1,29 @@
+{
+  "values": [
+    "birch_leaves",
+    {
+      "id": "promenade:autumn_birch_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:orange_birch_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:red_birch_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:yellow_birch_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:brown_birch_leaves",
+      "required": false
+    },
+    {
+      "id": "traverse:yellow_autumnal_leaves",
+      "required": false
+    }
+  ]
+}

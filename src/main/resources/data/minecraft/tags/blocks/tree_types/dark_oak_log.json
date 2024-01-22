@@ -1,0 +1,9 @@
+{
+  "values": [
+    "dark_oak_leaves",
+    {
+      "id": "traverse:red_autumnal_leaves",
+      "required": false
+    }
+  ]
+}

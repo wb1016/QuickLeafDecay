@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "quickleafdecay",
+  "version": "${version}",
+
+  "name": "Quick Leaf Decay",
+  "description": "yea why not",
+  "authors": [
+    "Blue_ON",
+    "Tfarecnim",
+    "supersaiyansubtlety"
+  ],
+  "contact": {
+    "sources": "https://0w0.kr"
+  },
+
+  "license": "https://0w0.kr",
+  "icon": "assets/quickleafdecay/quickleafdecay.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.blueon.quickleafdecay.Init"
+    ],
+    "client": [
+      "dev.blueon.quickleafdecay.ClientInit"
+    ]
+  },
+  "mixins": [
+    "quickleafdecay.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric-api": "*",
+    "minecraft": ">=1.20.4"
+  },
+  "recommends": {
+    "modmenu": ">=9.0.0",
+    "cloth-config2": ">=12.0.109"
+  },
+
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.donate": "https://ko-fi.com/flashyreese",
+        "modmenu.github_releases": "https://github.com/FlashyReese/sodium-extra-fabric/releases",
+        "modmenu.modrinth": "https://0w0.kr"
+      }
+    }
+  }
+}

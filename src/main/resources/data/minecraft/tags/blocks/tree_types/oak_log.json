@@ -1,0 +1,47 @@
+{
+  "values": [
+    "oak_leaves",
+    "azalea_leaves",
+    "flowering_azalea_leaves",
+    {
+      "id": "promenade:autumn_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:joshua_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:ripe_joshua_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:orange_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:brown_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:red_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:orchard_leaves",
+      "required": false
+    },
+    {
+      "id": "byg:flowering_orchard_leaves",
+      "required": false
+    },
+    {
+      "id": "traverse:brown_autumnal_leaves",
+      "required": false
+    },
+    {
+      "id": "traverse:orange_autumnal_leaves",
+      "required": false
+    }
+  ]
+}
