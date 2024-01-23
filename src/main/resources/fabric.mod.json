@@ -4,17 +4,17 @@
   "version": "${version}",
 
   "name": "Quick Leaf Decay",
-  "description": "yea why not",
+  "description": "hard fork of 'leaves us in peace' mod. provides fast leaf decay and targets less dependencies, fast update.",
   "authors": [
     "Blue_ON",
     "Tfarecnim",
     "supersaiyansubtlety"
   ],
   "contact": {
-    "sources": "https://0w0.kr"
+    "sources": "https://github.com/wb1016/QuickLeafDecay"
   },
 
-  "license": "https://0w0.kr",
+  "license": "https://github.com/wb1016/QuickLeafDecay/blob/main/LICENSE",
   "icon": "assets/quickleafdecay/quickleafdecay.png",
 
   "environment": "*",
@@ -36,15 +36,14 @@
     "minecraft": ">=1.20.4"
   },
   "recommends": {
-    "modmenu": ">=9.0.0",
-    "cloth-config2": ">=12.0.109"
+    "modmenu": ">=9.0.0"
   },
 
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.donate": "https://ko-fi.com/flashyreese",
-        "modmenu.github_releases": "https://github.com/FlashyReese/sodium-extra-fabric/releases",
+        "modmenu.donate": "https://github.com/sponsors/wb1016",
+        "modmenu.github_releases": "https://github.com/wb1016/QuickLeafDecay/releases",
         "modmenu.modrinth": "https://0w0.kr"
       }
     }
