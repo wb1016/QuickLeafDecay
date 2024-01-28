@@ -13,9 +13,5 @@ pluginManagement {
             name = 'Quilt'
             url = 'https://maven.quiltmc.org/repository/snapshot'
         }
-        maven {
-            name = 'Cotton'
-            url = 'https://server.bbkr.space/artifactory/libs-release/'
-        }
     }
 }
