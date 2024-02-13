@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "quickleafdecay",
   "version": "${version}",
-
   "name": "Quick Leaf Decay",
   "description": "hard fork of 'leaves us in peace' mod. provides fast leaf decay and targets less dependencies, fast update.",
   "authors": [
@@ -13,10 +12,8 @@
   "contact": {
     "sources": "https://github.com/wb1016/QuickLeafDecay"
   },
-
   "license": "https://github.com/wb1016/QuickLeafDecay/blob/main/LICENSE",
   "icon": "assets/quickleafdecay/quickleafdecay.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -29,7 +26,6 @@
   "mixins": [
     "quickleafdecay.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.14",
     "fabric-api": "*",
@@ -38,7 +34,6 @@
   "recommends": {
     "modmenu": ">=9.0.0"
   },
-
   "custom": {
     "modmenu": {
       "links": {

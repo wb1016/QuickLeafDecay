@@ -2,6 +2,7 @@ package dev.blueon.quickleafdecay.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.blueon.quickleafdecay.QuickLeafDecay;
+import dev.blueon.quickleafdecay.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
@@ -15,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.WorldAccess;
-import dev.blueon.quickleafdecay.Util;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,35 +35,41 @@ import static dev.blueon.quickleafdecay.QuickLeafDecay.LOGS_WITHOUT_LEAVES;
 
 @Mixin(LeavesBlock.class)
 abstract class LeavesBlockMixin extends Block {
-	@Unique @NotNull private static final ThreadLocal<Optional<BlockState>> currentLeaves =
-		ThreadLocal.withInitial(Optional::empty);
+	@Unique
+	@NotNull
+	private static final ThreadLocal<Optional<BlockState>> currentLeaves =
+									ThreadLocal.withInitial(Optional::empty);
 
-	@Shadow @Final public static IntProperty DISTANCE;
-	@Shadow @Final public static BooleanProperty PERSISTENT;
+	@Shadow
+	@Final
+	public static IntProperty DISTANCE;
+	@Shadow
+	@Final
+	public static BooleanProperty PERSISTENT;
 
 	private LeavesBlockMixin(Settings settings) {
 		super(settings);
 		throw new IllegalStateException("MixinLeavesBlock's dummy constructor called!");
 	}
 
-	@Inject(method = "getStateForNeighborUpdate",at = @At(value = "HEAD"))
+	@Inject(method = "getStateForNeighborUpdate", at = @At(value = "HEAD"))
 	private void captureNeighborBlock(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
 		if (shouldMatchLeavesTypes()) QuickLeafDecay.updateLeavesTags(this);
 		currentLeaves.set(Optional.of(state));
 	}
 
-	@Inject(method = "getStateForNeighborUpdate",at = @At(value = "TAIL"))
+	@Inject(method = "getStateForNeighborUpdate", at = @At(value = "TAIL"))
 	private void resetCapturedNeighborBlock(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
 		currentLeaves.remove();
 	}
 
-	@Inject(method = "updateDistanceFromLogs",at = @At(value = "HEAD"))
+	@Inject(method = "updateDistanceFromLogs", at = @At(value = "HEAD"))
 	private static void captureUpdatingBlock(BlockState state, WorldAccess world, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
 		if (shouldMatchLeavesTypes()) QuickLeafDecay.updateLeavesTags(state.getBlock());
 		currentLeaves.set(Optional.of(state));
 	}
 
-	@Inject(method = "updateDistanceFromLogs",at = @At(value = "TAIL"))
+	@Inject(method = "updateDistanceFromLogs", at = @At(value = "TAIL"))
 	private static void resetCapturedUpdatingBlock(BlockState state, WorldAccess world, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
 		currentLeaves.remove();
 	}
@@ -75,9 +81,9 @@ abstract class LeavesBlockMixin extends Block {
 
 	// If a log_leaves tag is found, match it. Otherwise, match all logs like vanilla
 	@Redirect(
-		method = "getOptionalDistanceFromLog",
-		at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"),
-		slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/registry/tag/BlockTags;LOGS:Lnet/minecraft/registry/tag/TagKey;"))
+									method = "getOptionalDistanceFromLog",
+									at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"),
+									slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/registry/tag/BlockTags;LOGS:Lnet/minecraft/registry/tag/TagKey;"))
 	)
 	private static boolean tryMatchLog(BlockState state, TagKey<Block> tagKey) {
 		if (shouldMatchLogsToLeaves()) {
@@ -86,8 +92,8 @@ abstract class LeavesBlockMixin extends Block {
 				final Block block = state.getBlock();
 				TagKey<Block> logLeavesTag = QuickLeafDecay.getLeavesForLog(block);
 				if (
-					logLeavesTag != null &&
-						Registries.BLOCK.getTag(logLeavesTag).isPresent()
+												logLeavesTag != null &&
+																				Registries.BLOCK.getTag(logLeavesTag).isPresent()
 				) return currentLeaves.get().get().isIn(logLeavesTag);
 			}
 		}

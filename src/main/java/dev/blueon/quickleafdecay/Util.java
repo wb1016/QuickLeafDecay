@@ -3,12 +3,13 @@ package dev.blueon.quickleafdecay;
 import net.minecraft.util.math.Direction;
 
 public final class Util {
-    private Util() { }
+	private Util() {
+	}
 
-    public static final Direction[] HORIZONTAL_DIRECTIONS = {
-            Direction.NORTH,
-            Direction.SOUTH,
-            Direction.EAST,
-            Direction.WEST
-    };
+	public static final Direction[] HORIZONTAL_DIRECTIONS = {
+									Direction.NORTH,
+									Direction.SOUTH,
+									Direction.EAST,
+									Direction.WEST
+	};
 }
