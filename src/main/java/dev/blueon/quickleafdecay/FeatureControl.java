@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 public final class FeatureControl {
@@ -36,7 +37,7 @@ public final class FeatureControl {
 		maxDecayDelay = Config.maxDecayDelay;
 
 		return minDecayDelay < maxDecayDelay ?
-										random.range(minDecayDelay, maxDecayDelay + 1) : maxDecayDelay;
+										random.nextBetween(minDecayDelay, maxDecayDelay + 1) : maxDecayDelay;
 	}
 
 	public static boolean shouldUpdateDiagonalLeaves() {
