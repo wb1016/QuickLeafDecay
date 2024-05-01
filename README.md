@@ -1,6 +1,6 @@
 # Quick Leaf Decay
 get it on [Modrinth](https://modrinth.com/mod/quickleafdecay)\
-![tree](https://github.com/wb1016/QuickLeafDecay/assets/47267045/cce2853a-b598-48bc-9fde-20f116441cdd)\
+![video preview](https://github.com/wb1016/QuickLeafDecay/assets/47267045/089de74c-f6ba-4383-bf94-56784709308f)\
 Minecraft Mod for Fabric/Quilt loader. **requires Fabric API or QSL**.\
 it started as a fork of [Leaves Us In Peace](https://modrinth.com/mod/leaves-us-in-peace) for latest version, but i decided to clean up the dependencies to make it sustainable.
 ## What it does
