@@ -14,8 +14,8 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -94,7 +94,7 @@ abstract class LeavesBlockMixin extends Block {
 				TagKey<Block> logLeavesTag = QuickLeafDecay.getLeavesForLog(block);
 				if (
 												logLeavesTag != null &&
-																				Registries.BLOCK.getEntryList(logLeavesTag).isPresent()
+																				Registries.BLOCK.getTag(logLeavesTag).isPresent()
 				) return currentLeaves.get().get().isIn(logLeavesTag);
 			}
 		}

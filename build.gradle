@@ -2,7 +2,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
 	//https://github.com/QuiltMC/quilt-loom
-	id 'org.quiltmc.loom' version '1.6-SNAPSHOT'
+	id 'org.quiltmc.loom' version '1.7-SNAPSHOT'
 }
 
 version = project.mod_version

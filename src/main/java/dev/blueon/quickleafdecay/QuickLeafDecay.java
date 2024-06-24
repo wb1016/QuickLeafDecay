@@ -16,7 +16,7 @@ public class QuickLeafDecay {
 	private static final String LEAVES_GROUPS_SUB_PATH = "leaves_groups/";
 	private static final String LOGS_WITHOUT_LEAVES_PATH = "logs_without_leaves";
 
-	public static final TagKey<Block> LOGS_WITHOUT_LEAVES = TagKey.of(RegistryKeys.BLOCK, new Identifier(NAMESPACE, LOGS_WITHOUT_LEAVES_PATH));
+	public static final TagKey<Block> LOGS_WITHOUT_LEAVES = TagKey.of(RegistryKeys.BLOCK, Identifier.of(NAMESPACE, LOGS_WITHOUT_LEAVES_PATH));
 
 	private static final Map<Block, TagKey<Block>> LEAVES_TAGS = new HashMap<>();
 	private static final Map<Block, TagKey<Block>> TREES_TAGS = new HashMap<>();
@@ -45,7 +45,7 @@ public class QuickLeafDecay {
 	private static void updateBlockTag(Block block, Map<Block, TagKey<Block>> tagMap, String subPath) {
 		if (tagMap.get(block) == null) {
 			final Identifier id = Registries.BLOCK.getId(block);
-			tagMap.put(block, TagKey.of(RegistryKeys.BLOCK, new Identifier(id.getNamespace(), subPath + id.getPath())));
+			tagMap.put(block, TagKey.of(RegistryKeys.BLOCK, Identifier.of(id.getNamespace(), subPath + id.getPath())));
 		}
 	}
 
