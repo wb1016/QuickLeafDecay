@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:palo_verde_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_palo_verde_leaves",
+      "required": false
+    }
+  ]
+}

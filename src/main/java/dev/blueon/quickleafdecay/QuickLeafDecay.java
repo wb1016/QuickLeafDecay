@@ -1,52 +1,76 @@
 package dev.blueon.quickleafdecay;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class QuickLeafDecay {
 	public static final String NAMESPACE = "quickleafdecay";
+	public static final Text NAME = Text.translatable("text." + NAMESPACE + ".name");
 
-	private static final String TREE_TYPES_SUB_PATH = "tree_types/";
+	public static final Logger LOGGER = LoggerFactory.getLogger(QuickLeafDecay.class);
+
+	public static final TagKey<Block> LOGS_WITHOUT_LEAVES =
+		TagKey.of(RegistryKeys.BLOCK, idOf("logs_without_leaves"));
+	public static final TagKey<Block> DECAYS_SLOWLY =
+		TagKey.of(RegistryKeys.BLOCK, idOf("decays_slowly"));
+
 	private static final String LEAVES_GROUPS_SUB_PATH = "leaves_groups/";
-	private static final String LOGS_WITHOUT_LEAVES_PATH = "logs_without_leaves";
+	private static final String TREE_TYPES_SUB_PATH = "tree_types/";
 
-	public static final TagKey<Block> LOGS_WITHOUT_LEAVES = TagKey.of(RegistryKeys.BLOCK, Identifier.of(NAMESPACE, LOGS_WITHOUT_LEAVES_PATH));
+	private static final Map<Block, TagKey<Block>> LEAVES_GROUPS = new HashMap<>();
+	private static final Map<Block, TagKey<Block>> TREE_TYPES = new HashMap<>();
 
-	private static final Map<Block, TagKey<Block>> LEAVES_TAGS = new HashMap<>();
-	private static final Map<Block, TagKey<Block>> TREES_TAGS = new HashMap<>();
-
-	public static void updateLeavesTags(Block leavesBlock) {
-		updateBlockTag(leavesBlock, LEAVES_TAGS, LEAVES_GROUPS_SUB_PATH);
+	public static void updateLeavesGroups(Block leavesBlock) {
+		updateBlockTag(leavesBlock, LEAVES_GROUPS, LEAVES_GROUPS_SUB_PATH);
 	}
 
-	public static void updateLogLeavesTags(Block block) {
-		updateBlockTag(block, TREES_TAGS, TREE_TYPES_SUB_PATH);
+	public static void updateTreeTypes(BlockState state) {
+		if (state.isIn(BlockTags.LOGS)) {
+			updateBlockTag(state.getBlock(), TREE_TYPES, TREE_TYPES_SUB_PATH);
+		}
 	}
 
-	public static TagKey<Block> getLeavesTag(Block leavesBlock) {
-		return LEAVES_TAGS.get(leavesBlock);
+	@Nullable
+	public static TagKey<Block> getLeavesGroup(Block leavesBlock) {
+		return LEAVES_GROUPS.get(leavesBlock);
 	}
 
-	public static TagKey<Block> getLeavesForLog(Block block) {
-		return TREES_TAGS.get(block);
+	@Nullable
+	public static TagKey<Block> getTreeType(Block block) {
+		return TREE_TYPES.get(block);
 	}
 
-	public static void onReload() {
-		LEAVES_TAGS.clear();
-		TREES_TAGS.clear();
+	public static void clearTags() {
+		LEAVES_GROUPS.clear();
+		TREE_TYPES.clear();
 	}
 
 	private static void updateBlockTag(Block block, Map<Block, TagKey<Block>> tagMap, String subPath) {
 		if (tagMap.get(block) == null) {
 			final Identifier id = Registries.BLOCK.getId(block);
-			tagMap.put(block, TagKey.of(RegistryKeys.BLOCK, Identifier.of(id.getNamespace(), subPath + id.getPath())));
+			tagMap.put(block, TagKey.of(RegistryKeys.BLOCK, id.withPrefixedPath(subPath)));
 		}
 	}
 
+	public static Identifier idOf(String path) {
+		return Identifier.of(NAMESPACE, path);
+	}
+
+	public interface PackIds {
+		Identifier WOOD_PREVENTS_DECAY = idOf("wood_prevents_decay");
+		Identifier YUNGS_BETTER_MINESHAFTS_COMPAT = idOf("yungs_better_mineshafts_compat");
+	}
 }
+

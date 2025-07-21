@@ -1,32 +1,73 @@
 package dev.blueon.quickleafdecay;
 
+import dev.blueon.quickleafdecay.QuickLeafDecay.PackIds;
+
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+import java.util.Map;
 
 import static net.fabricmc.fabric.api.resource.ResourceManagerHelper.registerBuiltinResourcePack;
 
 public class Init implements ModInitializer {
-	@Override
-	public void onInitialize() {
-		FeatureControl.init();
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, success) -> QuickLeafDecay.onReload());
+    private static void registerCompatPacks(ModContainer thisContainer, Map<String, Identifier> packIdsByModId) {
+        packIdsByModId.forEach((modId, packId) -> {
+            if (FabricLoader.getInstance().isModLoaded(modId)) {
+                registerBuiltinPacks(
+                    thisContainer,
+                    ResourcePackActivationType.ALWAYS_ENABLED,
+                    packId
+                );
+            }
+        });
+    }
 
-		ModContainer thisMod = FabricLoader.getInstance().getModContainer(QuickLeafDecay.NAMESPACE).get();
-		registerBuiltinResourcePack(
-										Identifier.of(QuickLeafDecay.NAMESPACE, "oak_leaves_recognize_jungle_logs"),
-										thisMod, ResourcePackActivationType.DEFAULT_ENABLED
-		);
-		registerBuiltinResourcePack(
-										Identifier.of(QuickLeafDecay.NAMESPACE, "wood_prevents_decay"),
-										thisMod, ResourcePackActivationType.NORMAL
-		);
-//        FabricLoader.getInstance().getModContainer("wwoo").ifPresent(unused -> registerBuiltinResourcePack(
-//            new Identifier(QuickLeafDecay.NAMESPACE, "wwoo_compat"),
-//            thisMod, ResourcePackActivationType.ALWAYS_ENABLED
-//        ));
-	}
+    private static void registerBuiltinPacks(
+        ModContainer thisContainer, ResourcePackActivationType activationType,
+        Identifier... ids
+    ) {
+        for (final var id : ids) {
+            registerBuiltinResourcePack(id, thisContainer, packNameOf(id), activationType);
+        }
+    }
+
+    private static Text packNameOf(Identifier id) {
+        return Text.translatable(String.join(".",
+            "pack",
+            id.getNamespace(),
+            id.getPath(),
+            "name"
+        ));
+    }
+
+    @Override
+    public void onInitialize() {
+        FeatureControl.init();
+
+        CommonLifecycleEvents.TAGS_LOADED.register((registries, client) -> {
+            if (!client) {
+                QuickLeafDecay.clearTags();
+            }
+        });
+
+        FabricLoader.getInstance().getModContainer(QuickLeafDecay.NAMESPACE).ifPresent(thisContainer -> {
+            registerBuiltinPacks(
+                thisContainer, ResourcePackActivationType.NORMAL,
+                PackIds.WOOD_PREVENTS_DECAY
+            );
+
+            registerCompatPacks(
+                thisContainer,
+                Map.of(
+                    "bettermineshafts", PackIds.YUNGS_BETTER_MINESHAFTS_COMPAT
+                )
+            );
+        });
+    }
 }

@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:jacaranda_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_jacaranda_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:indigo_jacaranda_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_indigo_jacaranda_leaves",
+      "required": false
+    }
+  ]
+}

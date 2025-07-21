@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:orchard_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:ripe_orchard_leaves",
+      "required": false
+    }
+  ]
+}

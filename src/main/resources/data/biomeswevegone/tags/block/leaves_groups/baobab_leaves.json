@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:flowering_baobab_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:ripe_baobab_leaves",
+      "required": false
+    }
+  ]
+}

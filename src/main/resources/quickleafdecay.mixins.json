@@ -1,9 +1,13 @@
 {
   "required": true,
   "package": "dev.blueon.quickleafdecay.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LeavesBlockMixin"
+    "ChunkSerializerMixin",
+    "AbstractLeavesBlockMixin",
+    "PackedTicksMixin",
+    "ServerWorldMixin",
+    "WorldChunkMixin"
   ],
   "injectors": {
     "defaultRequire": 1

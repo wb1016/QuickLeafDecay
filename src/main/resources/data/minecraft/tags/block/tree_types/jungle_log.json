@@ -1,5 +1,9 @@
 {
   "values": [
-    "jungle_leaves"
+    "jungle_leaves",
+    {
+      "id": "#leaves_us_in_peace:jungle_bush_leaves",
+      "required": false
+    }
   ]
 }

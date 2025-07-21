@@ -1,12 +1,14 @@
 package dev.blueon.quickleafdecay;
 
+import dev.blueon.quickleafdecay.FeatureControl.PersistentLeavesBehavior;
 import dev.blueon.quickleafdecay.configloader.ConfigLoader;
+import static dev.blueon.quickleafdecay.QuickLeafDecay.NAMESPACE;
 
 public class Config {
-	public static boolean matchLeavesTypes = true;
+	public static boolean matchLeavesTypes = false;
 	public static boolean unknownLeavesOnlyMatchSelf = true;
 	public static boolean matchLogsToLeaves = true;
-	public static boolean ignorePersistentLeaves = true;
+	public static PersistentLeavesBehavior persistentLeavesBehavior = FeatureControl.PersistentLeavesBehavior.IGNORE;
 	public static boolean accelerateLeavesDecay = true;
 	public static int minDecayDelay = 10;
 	public static int maxDecayDelay = 60;

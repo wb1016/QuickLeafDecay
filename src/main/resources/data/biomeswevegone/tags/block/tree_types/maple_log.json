@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:maple_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:silver_maple_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:red_maple_leaves",
+      "required": false
+    }
+  ]
+}

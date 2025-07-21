@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:ironwood_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_ironwood_leaves",
+      "required": false
+    }
+  ]
+}

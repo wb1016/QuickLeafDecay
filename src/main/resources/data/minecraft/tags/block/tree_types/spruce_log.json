@@ -2,19 +2,19 @@
   "values": [
     "spruce_leaves",
     {
-      "id": "byg:blue_spruce_leaves",
+      "id": "biomeswevegone:blue_spruce_leaves",
       "required": false
     },
     {
-      "id": "byg:yellow_spruce_leaves",
+      "id": "biomeswevegone:yellow_spruce_leaves",
       "required": false
     },
     {
-      "id": "byg:red_spruce_leaves",
+      "id": "biomeswevegone:red_spruce_leaves",
       "required": false
     },
     {
-      "id": "byg:orange_spruce_leaves",
+      "id": "biomeswevegone:orange_spruce_leaves",
       "required": false
     }
   ]

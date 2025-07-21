@@ -1,0 +1,16 @@
+{
+  "pack": {
+    "pack_format": 10,
+    "description": {
+      "translate": "pack.leaves_us_in_peace.twilight_forest_slow_decay_compat.description"
+    }
+  },
+  "filter": {
+    "block": [
+      {
+        "namespace": "leaves_us_in_peace",
+        "path": "tags/blocks/twilight_forest_compat/decays_instantly"
+      }
+    ]
+  }
+}

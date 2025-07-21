@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "twilightforest:twilight_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "twilightforest:mining_leaves",
+      "required": false
+    },
+    {
+      "id": "twilightforest:time_leaves",
+      "required": false
+    }
+  ]
+}

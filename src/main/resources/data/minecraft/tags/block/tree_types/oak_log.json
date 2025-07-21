@@ -8,31 +8,43 @@
       "required": false
     },
     {
-      "id": "byg:joshua_leaves",
+      "id": "biomeswevegone:orange_oak_leaves",
       "required": false
     },
     {
-      "id": "byg:ripe_joshua_leaves",
+      "id": "biomeswevegone:brown_oak_leaves",
       "required": false
     },
     {
-      "id": "byg:orange_oak_leaves",
+      "id": "biomeswevegone:red_oak_leaves",
       "required": false
     },
     {
-      "id": "byg:brown_oak_leaves",
+      "id": "biomeswevegone:orchard_leaves",
       "required": false
     },
     {
-      "id": "byg:red_oak_leaves",
+      "id": "biomeswevegone:flowering_orchard_leaves",
       "required": false
     },
     {
-      "id": "byg:orchard_leaves",
+      "id": "biomeswevegone:ripe_orchard_leaves",
       "required": false
     },
     {
-      "id": "byg:flowering_orchard_leaves",
+      "id": "biomeswevegone:yucca_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_yucca_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:ripe_yucca_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:firecracker_leaves",
       "required": false
     },
     {

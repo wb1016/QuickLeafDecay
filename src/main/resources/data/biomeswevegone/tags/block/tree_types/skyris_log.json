@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:skyris_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:flowering_skyris_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:green_apple_skyris_leaves",
+      "required": false
+    }
+  ]
+}

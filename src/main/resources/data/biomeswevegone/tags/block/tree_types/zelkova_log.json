@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:brown_zelkova_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:zelkova_leaves",
+      "required": false
+    }
+  ]
+}

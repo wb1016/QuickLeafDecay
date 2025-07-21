@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:flowering_yucca_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:ripe_yucca_leaves",
+      "required": false
+    }
+  ]
+}

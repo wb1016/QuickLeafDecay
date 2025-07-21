@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:white_sakura_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:yellow_sakura_leaves",
+      "required": false
+    }
+  ]
+}

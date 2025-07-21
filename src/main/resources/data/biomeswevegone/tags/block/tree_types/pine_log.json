@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:araucaria_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:pine_leaves",
+      "required": false
+    }
+  ]
+}

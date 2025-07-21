@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:white_cherry_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:pink_cherry_leaves",
+      "required": false
+    }
+  ]
+}

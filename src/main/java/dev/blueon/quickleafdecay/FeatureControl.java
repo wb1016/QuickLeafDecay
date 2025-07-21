@@ -3,9 +3,15 @@ package dev.blueon.quickleafdecay;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.math.random.Random;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static dev.blueon.quickleafdecay.QuickLeafDecay.DECAYS_SLOWLY;
+import static dev.blueon.quickleafdecay.Util.isModLoaded;
+
+import dev.blueon.quickleafdecay.Config;
 
 public final class FeatureControl {
 
@@ -21,15 +27,17 @@ public final class FeatureControl {
 		return Config.matchLogsToLeaves;
 	}
 
-	public static boolean shouldIgnorePersistentLeaves() {
-		return Config.ignorePersistentLeaves;
+	public static PersistentLeavesBehavior getPersistentLeavesBehavior() {
+		return Config.persistentLeavesBehavior;
 	}
 
-	public static boolean shouldAccelerateLeavesDecay() {
-		return Config.accelerateLeavesDecay;
-	}
+	public static boolean shouldAccelerateLeavesDecay(BlockState state) {
+        return !state.isIn(DECAYS_SLOWLY) && (
+            Config.accelerateLeavesDecay
+        );
+    }
 
-	public static int getDecayDelay(RandomGenerator random) {
+	public static int getDecayDelay(Random random) {
 		final int minDecayDelay;
 		final int maxDecayDelay;
 
@@ -37,7 +45,7 @@ public final class FeatureControl {
 		maxDecayDelay = Config.maxDecayDelay;
 
 		return minDecayDelay < maxDecayDelay ?
-										random.range(minDecayDelay, maxDecayDelay + 1) : maxDecayDelay;
+			random.nextBetweenExclusive(minDecayDelay, maxDecayDelay + 1) : maxDecayDelay;
 	}
 
 	public static boolean shouldUpdateDiagonalLeaves() {
@@ -54,6 +62,20 @@ public final class FeatureControl {
 		else return state.isIn(leavesTag);
 	}
 
+	public static boolean leavesMatch(@NotNull BlockState leaves1, @NotNull BlockState leaves2) {
+        if (leaves1.getBlock() == leaves2.getBlock()) {
+            return true;
+        } else {
+            @Nullable
+            final TagKey<Block> leavesGroup = QuickLeafDecay.getLeavesGroup(leaves1.getBlock());
+            if (leavesGroup == null) {
+                return !shouldUnknownLeavesOnlyMatchSelf();
+            } else {
+                return leaves2.isIn(leavesGroup);
+            }
+        }
+    }
+
 	public static void init() {
 		Config.load();
 		Config.save();
@@ -61,4 +83,10 @@ public final class FeatureControl {
 
 	private FeatureControl() {
 	}
+
+	public enum PersistentLeavesBehavior {
+        IGNORE,
+        NORMAL,
+        MATCH_ALL
+    }
 }

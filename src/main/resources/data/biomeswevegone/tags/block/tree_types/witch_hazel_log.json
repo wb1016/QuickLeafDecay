@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomeswevegone:witch_hazel_leaves",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:blooming_witch_hazel_leaves",
+      "required": false
+    }
+  ]
+}

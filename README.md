@@ -9,4 +9,4 @@ Leaves will ignore leaves of a different type when determining whether to decay 
 Leaves will ignore logs from different tree types when determining whether to decay or not.\
 all of features are configurable under config folder of your minecraft instance.
 ## documentation
-check [Leaves Us In Peace wiki](https://gitlab.com/supersaiyansubtlety/leaves_us_in_peace/-/wikis/home)
+check [Leaves Us In Peace wiki](https://gitlab.com/supersaiyansubtlety/quickleafdecay/-/wikis/home)

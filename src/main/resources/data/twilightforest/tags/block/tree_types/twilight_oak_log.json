@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "twilightforest:twilight_oak_leaves",
+      "required": false
+    },
+    {
+      "id": "twilightforest:rainbow_oak_leaves",
+      "required": false
+    }
+  ]
+}
