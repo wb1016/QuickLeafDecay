@@ -37,7 +37,7 @@ jobs:
       run: chmod +x gradlew;./gradlew build --stacktrace
 
     - name: Capture build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@4
       with:
         name: Artifacts
         path: build/libs/
