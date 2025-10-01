@@ -5,11 +5,11 @@ import dev.blueon.quickleafdecay.mixin_helper.PackedTicksMixinAccessor;
 import dev.blueon.quickleafdecay.mixin_helper.WorldChunkMixinAccessor;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.PalettesFactory;
 import net.minecraft.world.chunk.SerializedChunk;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.tick.ChunkTickScheduler;
@@ -49,7 +49,6 @@ abstract class ChunkSerializerMixin {
         DataResult::success
     );
 
-    // method_67719 is createCodec
     @Unique
     private static final Codec<List<Tick<LeavesBlock>>> LEAVES_TICK_CODEC =
         Tick.createCodec(LEAVES_CODEC).listOf();
@@ -59,13 +58,11 @@ abstract class ChunkSerializerMixin {
         at = @At(
             value = "NEW",
             target = "Lnet/minecraft/world/chunk/Chunk$TickSchedulers;"
-            // You might need an ordinal = 0 here if there were multiple NEW Chunk$TickSchedulers,
-            // but for a single direct constructor call, Mixin usually finds it.
         )
     )
     private static Chunk.TickSchedulers deserializeAndPackLeavesDecayTicks(
         Chunk.TickSchedulers originalPackedTicks,
-        HeightLimitView world, DynamicRegistryManager registryManager, NbtCompound nbt,
+        HeightLimitView world, PalettesFactory palettesFactory, NbtCompound nbt,
         @Local ChunkPos chunkPos
     ) {
         ((PackedTicksMixinAccessor) (Object) originalPackedTicks)
@@ -94,11 +91,13 @@ abstract class ChunkSerializerMixin {
     }
 
     @Inject(
-        method = "serializeTicks", at = @At("TAIL"))
+        method = "serializeTicks",
+        at = @At("TAIL")
+    )
     private static void unpackAndSerializeLeavesDecayTicks(NbtCompound nbt, Chunk.TickSchedulers packedTicks, CallbackInfo ci){
         final List<Tick<LeavesBlock>> leavesDecayTicks =
-        ((PackedTicksMixinAccessor) (Object) packedTicks).quickleafdecay$getLeavesDecayTicks();
-    // empty for non-WorldChunk Chunks
+            ((PackedTicksMixinAccessor) (Object) packedTicks).quickleafdecay$getLeavesDecayTicks();
+        // empty for non-WorldChunk Chunks
         if (!leavesDecayTicks.isEmpty()) {
             nbt.put(LEAVES_DECAY_SCHEDULER_KEY, LEAVES_TICK_CODEC, leavesDecayTicks);
         }
