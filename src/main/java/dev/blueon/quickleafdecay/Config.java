@@ -6,8 +6,8 @@ import static dev.blueon.quickleafdecay.QuickLeafDecay.NAMESPACE;
 
 public class Config {
 	public static boolean matchLeavesTypes = false;
-	public static boolean unknownLeavesOnlyMatchSelf = true;
-	public static boolean matchLogsToLeaves = true;
+	public static boolean unknownLeavesOnlyMatchSelf = false;
+	public static boolean matchLogsToLeaves = false;
 	public static PersistentLeavesBehavior persistentLeavesBehavior = FeatureControl.PersistentLeavesBehavior.IGNORE;
 	public static boolean accelerateLeavesDecay = true;
 	public static int minDecayDelay = 10;
