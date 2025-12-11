@@ -49,7 +49,6 @@ processResources {
     def mcversionProvider = providers.gradleProperty('minecraft_version')
     def loaderversionProvider = providers.gradleProperty('loader_version')
     def fabricversionProvider = providers.gradleProperty('fabric_version')
-	def modmenuversionProvider = providers.gradleProperty('modmenu_version')
 
     inputs.property "version", versionProvider.getOrElse("0.0.0")
 
@@ -58,8 +57,7 @@ processResources {
             "version": versionProvider.getOrElse("0.0.0"),
             "minecraft_version": mcversionProvider.getOrElse("minecraft_version"),
             "loader_version": loaderversionProvider.getOrElse("loader_version"),
-            "fabric_version": fabricversionProvider.getOrElse("fabric_api_version"),
-            "modmenu_version": modmenuversionProvider.getOrElse("modmenu_version")
+            "fabric_version": fabricversionProvider.getOrElse("fabric_api_version")
         )
     }
 }
