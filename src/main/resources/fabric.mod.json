@@ -27,12 +27,12 @@
     "quickleafdecay.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.17.2",
-    "fabric-api": ">=0.133.14+1.21.9",
-    "minecraft": ">=1.21.9"
+    "fabricloader": "${loader_version}",
+    "fabric-api": "${fabric_version}",
+    "minecraft": "${minecraft_version}"
   },
   "recommends": {
-    "modmenu": ">=9.0.0"
+    "modmenu": "${modmenu_version}"
   },
   "custom": {
     "modmenu": {

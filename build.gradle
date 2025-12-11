@@ -44,11 +44,24 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+    // Use provider for properties
+    def versionProvider = providers.gradleProperty('mod_version')
+    def mcversionProvider = providers.gradleProperty('minecraft_version')
+    def loaderversionProvider = providers.gradleProperty('loader_version')
+    def fabricversionProvider = providers.gradleProperty('fabric_version')
+	def modmenuversionProvider = providers.gradleProperty('modmenu_version')
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    inputs.property "version", versionProvider.getOrElse("0.0.0")
+
+    filesMatching("fabric.mod.json") {
+        expand(
+            "version": versionProvider.getOrElse("0.0.0"),
+            "minecraft_version": mcversionProvider.getOrElse("minecraft_version"),
+            "loader_version": loaderversionProvider.getOrElse("loader_version"),
+            "fabric_version": fabricversionProvider.getOrElse("fabric_api_version"),
+            "modmenu_version": modmenuversionProvider.getOrElse("modmenu_version")
+        )
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -66,7 +79,9 @@ java {
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
+    def jarName = base.archivesName.get()
+
+    from("LICENSE") {
+        rename { "${it}_${jarName}" }
+    }
 }
