@@ -1,0 +1,8 @@
+name: Context7
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Context7
+    command: "bash"
+    args: ["-c", "npx", "-y", "@upstash/context7-mcp", "--api-key", "'ctx7sk-67ae6860-c6b3-4ae5-80d6-aa5686aeffd6'"]
+    env: {}
