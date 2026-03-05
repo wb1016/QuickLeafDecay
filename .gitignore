@@ -25,3 +25,6 @@ run*/
 
 # custom
 compat_data_generation/
+
+# slop
+.continue

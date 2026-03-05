@@ -29,7 +29,7 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": ">=${fabric_version}",
-    "minecraft": ">=${minecraft_version}"
+    "minecraft": ">=26.1-alpha.11"
   },
   "recommends": {
     "modmenu": "*"

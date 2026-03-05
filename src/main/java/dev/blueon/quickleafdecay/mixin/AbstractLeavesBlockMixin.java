@@ -3,9 +3,9 @@ package dev.blueon.quickleafdecay.mixin;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 
 import dev.blueon.quickleafdecay.FeatureControl.PersistentLeavesBehavior;
 import dev.blueon.quickleafdecay.QuickLeafDecay;
@@ -15,19 +15,19 @@ import dev.blueon.quickleafdecay.mixin_helper.ServerWorldMixinAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.UntintedParticleLeavesBlock;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -66,7 +66,10 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 	public static BooleanProperty PERSISTENT;
 
 	@Shadow
-	protected abstract boolean shouldDecay(BlockState state);
+	protected abstract boolean decaying(BlockState state);
+
+	@Shadow
+	protected abstract void spawnFallingLeavesParticle(net.minecraft.world.level.Level level, BlockPos pos, RandomSource random);
 
 	private AbstractLeavesBlockMixin() {
         //noinspection DataFlowIssue
@@ -76,10 +79,10 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 
 	@Override
 	public void quickleafdecay$tryDecaying(
-		ServerWorld world, BlockPos pos, BlockState state, Random random
+		ServerLevel world, BlockPos pos, BlockState state, RandomSource random
 	) {
-		if (shouldAccelerateLeavesDecay(state) && this.shouldDecay(state)) {
-			dropStacks(state, world, pos);
+		if (shouldAccelerateLeavesDecay(state) && this.decaying(state)) {
+			dropResources(state, world, pos);
 			world.removeBlock(pos, false);
 			this.trySpawningDecayEffects(state, world, pos);
 
@@ -89,19 +92,19 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 					if (
 						diagonalState != null &&
 						diagonalState.getBlock() instanceof UntintedParticleLeavesBlock diagonalLeaves &&
-						leavesMatch(diagonalState, this.getDefaultState())
+						leavesMatch(diagonalState, this.defaultBlockState())
 					) {
-						world.scheduleBlockTick(diagonalPos, diagonalLeaves, 0);
+						world.scheduleTick(diagonalPos, diagonalLeaves, 0);
 					}
 				});
 			}
 		}
 	}
 
-	@Inject(method = "getStateForNeighborUpdate",at = @At(value = "HEAD"))
+	@Inject(method = "updateShape", at = @At(value = "HEAD"))
 	private void captureNeighborBlock(
-		BlockState state, WorldView world, ScheduledTickView tickSchedulerAccess, BlockPos pos, Direction direction,
-		BlockPos neighborPos, BlockState neighborState, Random random,
+		BlockState state, LevelReader world, ScheduledTickAccess tickSchedulerAccess, BlockPos pos, 
+		Direction directionToNeighbour, BlockPos neighbourPos, BlockState neighbourState, RandomSource random,
 		CallbackInfoReturnable<BlockState> cir
 	) {
 		if (shouldMatchLeavesTypes()) {
@@ -111,14 +114,14 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 		currentLeaves.set(Optional.of(state));
 	}
 
-	@Inject(method = "getStateForNeighborUpdate",at = @At(value = "TAIL"))
+	@Inject(method = "updateShape", at = @At(value = "TAIL"))
 	private void resetCapturedNeighborBlock(CallbackInfoReturnable<BlockState> cir) {
 		currentLeaves.remove();
 	}
 
-	@WrapMethod(method = "updateDistanceFromLogs")
+	@WrapMethod(method = "updateDistance")
 	private static BlockState captureUpdatingBlock(
-		BlockState state, WorldAccess world, BlockPos pos,
+		BlockState state, LevelAccessor world, BlockPos pos,
 		Operation<BlockState> original
 	) {
 		if (shouldMatchLeavesTypes()) {
@@ -135,10 +138,10 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 	}
 
 	@ModifyArg(
-		method = "updateDistanceFromLogs",
+		method = "updateDistance",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/block/LeavesBlock;getDistanceFromLog(Lnet/minecraft/block/BlockState;)I"
+			target = "Lnet/minecraft/world/level/block/LeavesBlock;getDistanceAt(Lnet/minecraft/world/level/block/state/BlockState;)I"
 		)
 	)
 	private static BlockState checkBlockState(BlockState state) {
@@ -151,15 +154,15 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 
 	// If a tree tag is found, match it. Otherwise, match all logs like vanilla
 	@Redirect(
-		method = "getOptionalDistanceFromLog",
+		method = "getOptionalDistanceAt",
 		at = @At(
 			value = "INVOKE", ordinal = 0,
-			target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"
+			target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z"
 		),
 		slice = @Slice(
 			from = @At(
 				value = "FIELD",
-				target = "Lnet/minecraft/registry/tag/BlockTags;LOGS:Lnet/minecraft/registry/tag/TagKey;"
+				target = "Lnet/minecraft/tags/BlockTags;PREVENTS_NEARBY_LEAF_DECAY:Lnet/minecraft/tags/TagKey;"
 			)
 		)
 	)
@@ -170,9 +173,9 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 			if (
 				getPersistentLeavesBehavior() != PersistentLeavesBehavior.MATCH_ALL
 					|| leaves == null
-					|| !leaves.get(PERSISTENT)
+					|| !leaves.getValue(PERSISTENT)
 			) {
-				if (state.isIn(LOGS_WITHOUT_LEAVES)) {
+				if (state.is(LOGS_WITHOUT_LEAVES)) {
 					return false;
 				}
 
@@ -180,23 +183,22 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 					final Block block = state.getBlock();
 					final TagKey<Block> treeType = QuickLeafDecay.getTreeType(block);
 					if (
-						treeType != null &&
-							Registries.BLOCK.getOptional(treeType).isPresent()
+						treeType != null
 					) {
-						return leaves.isIn(treeType);
+						return leaves.is(treeType);
 					}
 				}
 			}
 		}
 
-		return state.isIn(BlockTags.LOGS);
+		return state.is(BlockTags.PREVENTS_NEARBY_LEAF_DECAY);
 	}
 
 	@WrapOperation(
-		method = "getOptionalDistanceFromLog",
+		method = "getOptionalDistanceAt",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/block/BlockState;contains(Lnet/minecraft/state/property/Property;)Z"
+			target = "Lnet/minecraft/world/level/block/state/BlockState;hasProperty(Lnet/minecraft/world/level/block/state/properties/Property;)Z"
 		)
 	)
 	private static boolean matchLeaves(
@@ -213,8 +215,8 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 
 		final PersistentLeavesBehavior persistentBehavior = getPersistentLeavesBehavior();
 		if (persistentBehavior != PersistentLeavesBehavior.NORMAL) {
-			final Boolean currentPersistent = currentLeavesState.get(PERSISTENT);
-			final Boolean otherPersistent = otherLeavesState.getOrEmpty(PERSISTENT).orElse(false);
+			final Boolean currentPersistent = currentLeavesState.getValue(PERSISTENT);
+			final Boolean otherPersistent = otherLeavesState.getOptionalValue(PERSISTENT).orElse(false);
 			// non-persistent leaves only care about other non-persistent leaves,
 			//   persistent leaves care about BOTH non/persistent leaves
 			if (
@@ -238,22 +240,22 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 	}
 
     @WrapOperation(
-		method = "scheduledTick",
+		method = "tick",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/server/world/ServerWorld;setBlockState(Lnet/minecraft/util/math/BlockPos;" +
-				"Lnet/minecraft/block/BlockState;I)Z"
+			target = "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;" +
+				"Lnet/minecraft/world/level/block/state/BlockState;I)Z"
 		)
 	)
 	private boolean tryAcceleratingDecay(
-		ServerWorld world, BlockPos pos, BlockState newState, int flags, Operation<Boolean> original,
-		BlockState oldState, ServerWorld duplicate1, BlockPos duplicate2, Random random
+		ServerLevel world, BlockPos pos, BlockState newState, int flags, Operation<Boolean> original,
+		BlockState oldState, ServerLevel duplicate1, BlockPos duplicate2, RandomSource random
 	) {
 		final boolean originalReturn = original.call(world, pos, newState, flags);
 
 		// checking that the old state cannot decay is important for trees that generate with
 		// leaves with incorrect distances
-		if (this.shouldDecay(newState) && !this.shouldDecay(oldState)) {
+		if (this.decaying(newState) && !this.decaying(oldState)) {
 			((ServerWorldMixinAccessor) world).quickleafdecay$scheduleLeavesDecayTick(
 				pos, (LeavesBlock)(Object) this, getDecayDelay(random)
 			);
@@ -266,11 +268,11 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 		method = "randomTick",
 		at = @At(
 			value = "INVOKE", shift = At.Shift.AFTER,
-			target = "Lnet/minecraft/server/world/ServerWorld;removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z"
+			target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"
 		)
 	)
 	private void trySpawningDecayEffects(
-		BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci
+		BlockState state, ServerLevel world, BlockPos pos, RandomSource random, CallbackInfo ci
 	) {
 		this.trySpawningDecayEffects(state, world, pos);
 	}
@@ -279,12 +281,12 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 	private static Collection<BlockPos> getDiagonalPositions(BlockPos pos) {
 		final Collection<BlockPos> diagonalPositions = new LinkedList<>();
 		for (final Direction direction : Direction.values()) {
-			if (direction.getHorizontalQuarterTurns() >= 0) {
-				diagonalPositions.add(pos.offset(direction).offset(direction.rotateYClockwise()));
+			if (direction.getAxis().isHorizontal()) {
+				diagonalPositions.add(pos.relative(direction).relative(direction.getClockWise()));
 			} else {
-				final BlockPos vOffsetPos = pos.offset(direction);
-				Direction.Type.HORIZONTAL.stream().forEach(horizontal ->
-					diagonalPositions.add(vOffsetPos.offset(direction).offset(horizontal.rotateYClockwise()))
+				final BlockPos vOffsetPos = pos.relative(direction);
+				Direction.Plane.HORIZONTAL.stream().forEach(horizontal ->
+					diagonalPositions.add(vOffsetPos.relative(direction).relative(horizontal.getClockWise()))
 				);
 			}
 		}
@@ -293,9 +295,9 @@ abstract class AbstractLeavesBlockMixin extends Block implements AbstractLeavesB
 	}
 
 	@Unique
-	private void trySpawningDecayEffects(BlockState state, ServerWorld world, BlockPos pos) {
+	private void trySpawningDecayEffects(BlockState state, ServerLevel world, BlockPos pos) {
 		if (shouldDoDecayingLeavesEffects()) {
-			this.spawnBreakParticles(world, null, pos, state);
+			this.spawnFallingLeavesParticle(world, pos, world.getRandom());
 		}
 	}
 }

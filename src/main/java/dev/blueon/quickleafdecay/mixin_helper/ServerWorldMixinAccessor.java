@@ -1,11 +1,11 @@
 package dev.blueon.quickleafdecay.mixin_helper;
 
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.tick.WorldTickScheduler;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ticks.LevelTicks;
 
 public interface ServerWorldMixinAccessor {
-    WorldTickScheduler<LeavesBlock> quickleafdecay$getLeavesDecayTickScheduler();
+    LevelTicks<LeavesBlock> quickleafdecay$getLeavesDecayTickScheduler();
 
     void quickleafdecay$scheduleLeavesDecayTick(BlockPos pos, LeavesBlock leavesBlock, int delay);
 }

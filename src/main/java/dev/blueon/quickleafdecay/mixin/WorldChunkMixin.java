@@ -3,11 +3,11 @@ package dev.blueon.quickleafdecay.mixin;
 import dev.blueon.quickleafdecay.mixin_helper.PackedTicksMixinAccessor;
 import dev.blueon.quickleafdecay.mixin_helper.ServerWorldMixinAccessor;
 import dev.blueon.quickleafdecay.mixin_helper.WorldChunkMixinAccessor;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.tick.ChunkTickScheduler;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.ticks.LevelChunkTicks;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(WorldChunk.class)
-abstract class WorldChunkMixin extends Chunk implements WorldChunkMixinAccessor {
+@Mixin(LevelChunk.class)
+abstract class WorldChunkMixin extends ChunkAccess implements WorldChunkMixinAccessor {
     @Unique
-    private ChunkTickScheduler<LeavesBlock> leavesDecayTickScheduler;
+    private LevelChunkTicks<LeavesBlock> leavesDecayTickScheduler;
 
     private WorldChunkMixin() {
         //noinspection DataFlowIssue
@@ -29,44 +29,38 @@ abstract class WorldChunkMixin extends Chunk implements WorldChunkMixinAccessor 
 
     @Override
     public void quickleafdecay$setLeavesDecayTickScheduler(
-        ChunkTickScheduler<LeavesBlock> leavesDecayTickScheduler
+        LevelChunkTicks<LeavesBlock> leavesDecayTickScheduler
     ) {
         this.leavesDecayTickScheduler = leavesDecayTickScheduler;
     }
 
     @Inject(
-        method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/util/math/ChunkPos;" +
-            "Lnet/minecraft/world/chunk/UpgradeData;Lnet/minecraft/world/tick/ChunkTickScheduler;" +
-            "Lnet/minecraft/world/tick/ChunkTickScheduler;J[Lnet/minecraft/world/chunk/ChunkSection;" +
-            "Lnet/minecraft/world/chunk/WorldChunk$EntityLoader;Lnet/minecraft/world/gen/chunk/BlendingData;)V",
+        method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/ChunkPos;" +
+            "Lnet/minecraft/world/level/chunk/UpgradeData;Lnet/minecraft/world/ticks/LevelChunkTicks;" +
+            "Lnet/minecraft/world/ticks/LevelChunkTicks;J[Lnet/minecraft/world/level/chunk/LevelChunkSection;" +
+            "Lnet/minecraft/world/level/chunk/LevelChunk$PostLoadProcessor;Lnet/minecraft/world/level/levelgen/blending/BlendingData;)V",
         at = @At("TAIL")
     )
     private void initFields(CallbackInfo ci) {
-        this.leavesDecayTickScheduler = new ChunkTickScheduler<>();
+        this.leavesDecayTickScheduler = new LevelChunkTicks<>();
     }
 
-    @Inject(method = "addChunkTickSchedulers", at = @At("TAIL"))
-    private void scheduleInitialLeavesDecayTicks(ServerWorld world, CallbackInfo ci) {
-        long time = world.getTime();
-        this.leavesDecayTickScheduler.disable(time);
+    @Inject(method = "registerTickContainerInLevel", at = @At("TAIL"))
+    private void addLeavesDecayTickScheduler(ServerLevel level, CallbackInfo ci) {
+        ((ServerWorldMixinAccessor) level).quickleafdecay$getLeavesDecayTickScheduler()
+            .addContainer(this.chunkPos, this.leavesDecayTickScheduler);
     }
 
-    @Inject(method = "addChunkTickSchedulers", at = @At("TAIL"))
-    private void addLeavesDecayTickScheduler(ServerWorld world, CallbackInfo ci) {
-        ((ServerWorldMixinAccessor) world).quickleafdecay$getLeavesDecayTickScheduler()
-            .addChunkTickScheduler(this.pos, this.leavesDecayTickScheduler);
+    @Inject(method = "unregisterTickContainerFromLevel", at = @At("TAIL"))
+    private void removeLeavesDecayTickScheduler(ServerLevel level, CallbackInfo ci) {
+        ((ServerWorldMixinAccessor) level).quickleafdecay$getLeavesDecayTickScheduler()
+            .removeContainer(this.chunkPos);
     }
 
-    @Inject(method = "removeChunkTickSchedulers", at = @At("TAIL"))
-    private void removeLeavesDecayTickScheduler(ServerWorld world, CallbackInfo ci) {
-        ((ServerWorldMixinAccessor) world).quickleafdecay$getLeavesDecayTickScheduler()
-            .removeChunkTickScheduler(this.pos);
-    }
-
-    @Inject(method = "getTickSchedulers", at = @At("RETURN"))
-    private void packLeavesDecayTicks(long time, CallbackInfoReturnable<Chunk.TickSchedulers> cir) {
+    @Inject(method = "getTicksForSerialization", at = @At("RETURN"))
+    private void packLeavesDecayTicks(long time, CallbackInfoReturnable<ChunkAccess.PackedTicks> cir) {
         ((PackedTicksMixinAccessor) (Object) cir.getReturnValue()).quickleafdecay$setLeavesDecayTicks(
-            this.leavesDecayTickScheduler.collectTicks(time)
+            this.leavesDecayTickScheduler.pack(time)
         );
     }
 }

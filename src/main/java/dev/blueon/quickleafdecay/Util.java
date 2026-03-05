@@ -4,17 +4,17 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.api.metadata.version.VersionPredicate;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.Optional;
 
 import static dev.blueon.quickleafdecay.QuickLeafDecay.LOGGER;
 
 public final class Util {
-    public static Text replace(Text text, String regex, String replacement) {
+    public static Component replace(Component text, String regex, String replacement) {
         String string = text.getString();
         string = string.replaceAll(regex, replacement);
-        return Text.literal(string).setStyle(text.getStyle());
+        return Component.literal(string).setStyle(text.getStyle());
     }
 
     public static boolean isModLoaded(String id, String versionPredicate) {

@@ -1,9 +1,9 @@
 package dev.blueon.quickleafdecay;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,12 +32,12 @@ public final class FeatureControl {
 	}
 
 	public static boolean shouldAccelerateLeavesDecay(BlockState state) {
-        return !state.isIn(DECAYS_SLOWLY) && (
+        return !state.is(DECAYS_SLOWLY) && (
             Config.accelerateLeavesDecay
         );
     }
 
-	public static int getDecayDelay(Random random) {
+	public static int getDecayDelay(RandomSource random) {
 		final int minDecayDelay;
 		final int maxDecayDelay;
 
@@ -45,7 +45,7 @@ public final class FeatureControl {
 		maxDecayDelay = Config.maxDecayDelay;
 
 		return minDecayDelay < maxDecayDelay ?
-			random.nextBetweenExclusive(minDecayDelay, maxDecayDelay + 1) : maxDecayDelay;
+			random.nextIntBetweenInclusive(minDecayDelay, maxDecayDelay) : maxDecayDelay;
 	}
 
 	public static boolean shouldUpdateDiagonalLeaves() {
@@ -59,7 +59,7 @@ public final class FeatureControl {
 	public static boolean isMatchingLeaves(TagKey<Block> leavesTag, @NotNull BlockState state, @NotNull BlockState currentLeavesState) {
 		if (state.getBlock() == currentLeavesState.getBlock()) return true;
 		else if (leavesTag == null) return !shouldUnknownLeavesOnlyMatchSelf();
-		else return state.isIn(leavesTag);
+		else return state.is(leavesTag);
 	}
 
 	public static boolean leavesMatch(@NotNull BlockState leaves1, @NotNull BlockState leaves2) {
@@ -71,7 +71,7 @@ public final class FeatureControl {
             if (leavesGroup == null) {
                 return !shouldUnknownLeavesOnlyMatchSelf();
             } else {
-                return leaves2.isIn(leavesGroup);
+                return leaves2.is(leavesGroup);
             }
         }
     }

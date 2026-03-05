@@ -8,8 +8,8 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
@@ -37,8 +37,8 @@ public class Init implements ModInitializer {
         }
     }
 
-    private static Text packNameOf(Identifier id) {
-        return Text.translatable(String.join(".",
+    private static Component packNameOf(Identifier id) {
+        return Component.translatable(String.join(".",
             "pack",
             id.getNamespace(),
             id.getPath(),
