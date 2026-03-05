@@ -4,7 +4,8 @@ import dev.blueon.quickleafdecay.QuickLeafDecay.PackIds;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 
@@ -13,15 +14,13 @@ import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
-import static net.fabricmc.fabric.api.resource.ResourceManagerHelper.registerBuiltinResourcePack;
-
 public class Init implements ModInitializer {
     private static void registerCompatPacks(ModContainer thisContainer, Map<String, Identifier> packIdsByModId) {
         packIdsByModId.forEach((modId, packId) -> {
             if (FabricLoader.getInstance().isModLoaded(modId)) {
                 registerBuiltinPacks(
                     thisContainer,
-                    ResourcePackActivationType.ALWAYS_ENABLED,
+                    PackActivationType.ALWAYS_ENABLED,
                     packId
                 );
             }
@@ -29,11 +28,11 @@ public class Init implements ModInitializer {
     }
 
     private static void registerBuiltinPacks(
-        ModContainer thisContainer, ResourcePackActivationType activationType,
+        ModContainer thisContainer, PackActivationType activationType,
         Identifier... ids
     ) {
         for (final var id : ids) {
-            registerBuiltinResourcePack(id, thisContainer, packNameOf(id), activationType);
+            ResourceLoader.registerBuiltinPack(id, thisContainer, packNameOf(id), activationType);
         }
     }
 
@@ -58,7 +57,7 @@ public class Init implements ModInitializer {
 
         FabricLoader.getInstance().getModContainer(QuickLeafDecay.NAMESPACE).ifPresent(thisContainer -> {
             registerBuiltinPacks(
-                thisContainer, ResourcePackActivationType.NORMAL,
+                thisContainer, PackActivationType.NORMAL,
                 PackIds.WOOD_PREVENTS_DECAY
             );
 
